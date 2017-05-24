@@ -145,28 +145,66 @@
 
     var hiraganaToRomaji = {"あ":["a"],"い":["i","yi"],"う":["u","wu","whu"],"え":["e"],"お":["o"],"ぁ":["xa"],"ぃ":["xi","xyi"],"ぅ":["xu"],"ぇ":["xe","xye"],"ぉ":["xo"],"いぇ":["ye"],"うぁ":["wha"],"うぃ":["whi","wi"],"うぇ":["whe","we"],"うぉ":["who"],"ゔぁ":["va"],"ゔぃ":["vi","vyi"],"ゔ":["vu"],"ゔぇ":["ve","vye"],"ゔぉ":["vo"],"ゔゃ":["vya"],"ゔゅ":["vyu"],"ゔょ":["vyo"],"か":["ka"],"き":["ki"],"く":["ku"],"け":["ke"],"こ":["ko"],"ヵ":["lka","xka"],"ヶ":["lke","xke"],"きゃ":["kya"],"きぃ":["kyi"],"きゅ":["kyu"],"きぇ":["kye"],"きょ":["kyo"],"くゃ":["qya"],"くゅ":["qyu"],"くょ":["qyo"],"くぁ":["qwa","qa","kwa"],"くぃ":["qwi","qi","qyi"],"くぅ":["qwu"],"くぇ":["qwe","qe","qye"],"くぉ":["qwo","qo"],"が":["ga"],"ぎ":["gi"],"ぐ":["gu"],"げ":["ge"],"ご":["go"],"ぎゃ":["gya"],"ぎぃ":["gyi"],"ぎゅ":["gyu"],"ぎぇ":["gye"],"ぎょ":["gyo"],"ぐぁ":["gwa"],"ぐぃ":["gwi"],"ぐぅ":["gwu"],"ぐぇ":["gwe"],"ぐぉ":["gwo"],"さ":["sa"],"し":["si","shi"],"す":["su"],"せ":["se"],"そ":["so"],"ざ":["za"],"じ":["zi","ji"],"ず":["zu"],"ぜ":["ze"],"ぞ":["zo"],"しゃ":["sya","sha"],"しぃ":["syi"],"しゅ":["syu","shu"],"しぇ":["sye","she"],"しょ":["syo","sho"],"すぁ":["swa"],"すぃ":["swi"],"すぅ":["swu"],"すぇ":["swe"],"すぉ":["swo"],"じゃ":["zya","ja","jya"],"じぃ":["zyi","jyi"],"じゅ":["zyu","ju","jyu"],"じぇ":["zye","je","jye"],"じょ":["zyo","jo","jyo"],"た":["ta"],"ち":["ti","chi"],"つ":["tu","tsu"],"て":["te"],"と":["to"],"っ":["ltu","xtu","ltsu"],"ちゃ":["tya","cha","cya"],"ちぃ":["tyi","cyi"],"ちゅ":["tyu","chu","cyu"],"ちぇ":["tye","che","cye"],"ちょ":["tyo","cho","cyo"],"つぁ":["tsa"],"つぃ":["tsi"],"つぇ":["tse"],"つぉ":["tso"],"てゃ":["tha"],"てぃ":["thi"],"てゅ":["thu"],"てぇ":["the"],"てょ":["tho"],"とぁ":["twa"],"とぃ":["twi"],"とぅ":["twu"],"とぇ":["twe"],"とぉ":["two"],"だ":["da"],"ぢ":["di"],"づ":["du"],"で":["de"],"ど":["do"],"ぢゃ":["dya"],"ぢぃ":["dyi"],"ぢゅ":["dyu"],"ぢぇ":["dye"],"ぢょ":["dyo"],"でゃ":["dha"],"でぃ":["dhi"],"でゅ":["dhu"],"でぇ":["dhe"],"でょ":["dho"],"どぁ":["dwa"],"どぃ":["dwi"],"どぅ":["dwu"],"どぇ":["dwe"],"どぉ":["dwo"],"な":["na"],"に":["ni"],"ぬ":["nu"],"ね":["ne"],"の":["no"],"にゃ":["nya"],"にぃ":["nyi"],"にゅ":["nyu"],"にぇ":["nye"],"にょ":["nyo"],"は":["ha"],"ひ":["hi"],"ふ":["hu","fu"],"へ":["he"],"ほ":["ho"],"ひゃ":["hya"],"ひぃ":["hyi"],"ひゅ":["hyu"],"ひぇ":["hye"],"ひょ":["hyo"],"ふゃ":["fya"],"ふゅ":["fyu"],"ふょ":["fyo"],"ふぁ":["fwa","fa"],"ふぃ":["fwi","fi","fyi"],"ふぅ":["fwu"],"ふぇ":["fwe","fe","fye"],"ふぉ":["fwo","fo"],"ば":["ba"],"び":["bi"],"ぶ":["bu"],"べ":["be"],"ぼ":["bo"],"びゃ":["bya"],"びぃ":["byi"],"びゅ":["byu"],"びぇ":["bye"],"びょ":["byo"],"ぱ":["pa"],"ぴ":["pi"],"ぷ":["pu"],"ぺ":["pe"],"ぽ":["po"],"ぴゃ":["pya"],"ぴぃ":["pyi"],"ぴゅ":["pyu"],"ぴぇ":["pye"],"ぴょ":["pyo"],"ま":["ma"],"み":["mi"],"む":["mu"],"め":["me"],"も":["mo"],"みゃ":["mya"],"みぃ":["myi"],"みゅ":["myu"],"みぇ":["mye"],"みょ":["myo"],"や":["ya"],"ゆ":["yu"],"よ":["yo"],"ゃ":["xya"],"ゅ":["xyu"],"ょ":["xyo"],"ら":["ra","la"],"り":["ri","li"],"る":["ru","lu"],"れ":["re","le"],"ろ":["ro","lo"],"りゃ":["rya","lya"],"りぃ":["ryi","lyi"],"りゅ":["ryu","lyu"],"りぇ":["rye","lye"],"りょ":["ryo","lyo"],"わ":["wa"],"を":["wo"],"ゎ":["lwe","xwa"],"ん":["n","nn","n ","xn"]};
 
-    var whatDoIKnow = [
-    	'あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ',
-									 'が', 'ぎ', 'ぐ', 'げ', 'ご', 
-    	'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 
-    	'ざ', 'じ', 'ず', 'ぜ', 'そ', 'だ', 'ぢ', 'づ', 'で', 'ど', 
-    	'は', 'ひ', 'ふ', 'へ', 'ほ', 'な', 'に', 'ぬ', 'ね', 'の', 
-    	'ば', 'び', 'ぶ', 'べ', 'ぼ',
-    	'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
-    	'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 
-    	'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん',
-    	'きゃ', 'きゅ', 'きょ',
-    	'しゃ', 'しゅ', 'しょ',
-    	'ちゃ', 'ちゅ', 'ちょ',
-    	'にゃ', 'にゅ', 'にょ',
-    	'ひゃ', 'にゅ', 'にょ',
-    	'みゃ', 'みゅ', 'みょ',
-    	'りゃ', 'りゅ', 'りょ',
-    	'ぎゃ', 'ぎゅ', 'ぎょ',
-    	'じゃ', 'じゅ', 'じょ',
-    	// 'ぢゃ', 'ぢゅ', 'ぢょ',
-    	'びゃ', 'びゅ', 'びょ',
-    	'ぴゃ', 'ぴょ', 'ぴょ'
+    var whatDoIKnow = [				 // end_index
+    	'あ', 'い', 'う', 'え', 'お', // 5
+		'か', 'き', 'く', 'け', 'こ', // 10				 
+		'さ', 'し', 'す', 'せ', 'そ', // 15
+		'た', 'ち', 'つ', 'て', 'と', // 20
+		'な', 'に', 'ぬ', 'ね', 'の', // 25
+		'は', 'ひ', 'ふ', 'へ', 'ほ', // 30
+		'ま', 'み', 'む', 'め', 'も', // 35
+		'や', 'ゆ', 'よ',             // 38
+		'ら', 'り', 'る', 'れ', 'ろ', // 43
+		'わ', 'を',                  // 45
+		'ん',                        // 46
+    ];
+
+    var kanaGroupIndices = [
+		5,
+		10,
+		15,
+		20,
+		25,
+		30,
+		35,
+		38,
+		43,
+		45,
+		46
+    ];
+
+    var minKanaGroupIndex = 3;
+    var maxKanaGroupIndex = 3;
+
+	var whatDoIKnowOriginal = [
+    	'あ', 'い', 'う', 'え', 'お', 
+		'か', 'き', 'く', 'け', 'こ',
+		'さ', 'し', 'す', 'せ', 'そ', 
+		'た', 'ち', 'つ', 'て', 'と',
+		'な', 'に', 'ぬ', 'ね', 'の', 
+		'は', 'ひ', 'ふ', 'へ', 'ほ', 
+		'ま', 'み', 'む', 'め', 'も', 
+		'や', 'ゆ', 'よ', 
+		'ら', 'り', 'る', 'れ', 'ろ', 
+		'わ', 'を', 
+		'ん',
+		'が', 'ぎ', 'ぐ', 'げ', 'ご', 
+		'ざ', 'じ', 'ず', 'ぜ', 'そ', 
+		'だ', 'ぢ', 'づ', 'で', 'ど', 
+		'ば', 'び', 'ぶ', 'べ', 'ぼ',
+		'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
+		'きゃ', 'きゅ', 'きょ',
+		'しゃ', 'しゅ', 'しょ',
+		'ちゃ', 'ちゅ', 'ちょ',
+		'にゃ', 'にゅ', 'にょ',
+		'ひゃ', 'にゅ', 'にょ',
+		'みゃ', 'みゅ', 'みょ',
+		'りゃ', 'りゅ', 'りょ',
+		'ぎゃ', 'ぎゅ', 'ぎょ',
+		'じゃ', 'じゅ', 'じょ',
+		// 'ぢゃ', 'ぢゅ', 'ぢょ',
+		'びゃ', 'びゅ', 'びょ',
+		'ぴゃ', 'ぴょ', 'ぴょ'
     ];
 
     var HIRAGANA_START  = 0x3041;
@@ -262,6 +300,37 @@
     	return Math.floor(Math.random() * (b - a) + a);
     }
 
+	Math.clamp = function(number, min, max) {
+	  return Math.max(min, Math.min(number, max));
+	}
+
+	Math.increasing= function(a, b)
+	{
+		return a > b ? [b, a] : [a, b];
+	}
+
+	function getKanaGroupBeginIndex(kanaGroupIndex) {
+		if(minKanaGroupIndex == 0)
+			return 0;
+		
+		var groupIndex= Math.clamp((kanaGroupIndex-1), 0, kanaGroupIndices.length-1)
+		return kanaGroupIndices[groupIndex];
+	}
+
+	function getKanaGroupEndIndex(kanaGroupIndex) {
+		var groupIndex= Math.clamp(kanaGroupIndex, 0, kanaGroupIndices.length-1)
+		return kanaGroupIndices[groupIndex];
+	}
+
+	function getListOfKana()
+	{
+		return whatDoIKnow;
+	}
+
+    function getRandKana(listOfKana) {
+    	return listOfKana[rand(0, listOfKana.length-1)];
+    }
+
     $('body, html').click(function () {
     	$('.romaji-container').focus();
     })
@@ -283,8 +352,10 @@
     		$('.score').text('0/100');
 
     		$('.kana-container').html('').attr('style', '');
+
+    		var kanaList= getListOfKana();
     		for (var i = 0; i < 100; i++) {
-                var kanaChar = whatDoIKnow[rand(0, whatDoIKnow.length - 1)];
+                var kanaChar = getRandKana(kanaList);
                 var isKatakana = $('input[name="kana"]:checked').val() == 'katakana';
                 kanaChar = isKatakana ? hiraganaToKatakana(kanaChar) : kanaChar;
 
@@ -352,7 +423,6 @@
     		started = false;
     	}
     });
-
     </script>
     
     <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
