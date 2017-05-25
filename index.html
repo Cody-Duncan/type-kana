@@ -89,6 +89,10 @@
         margin-right: 24px;
     }
 
+    .radio {
+		display: inline-block;
+    }
+
     .radio .icons .first-icon,
     .radio .icons .second-icon {
         background: transparent;
@@ -100,6 +104,27 @@
     .radio.checked .second-icon {
         color: #3498db;
     }
+
+	.kana-selection-block {
+		text-align: center;
+	}
+
+	.kana-selection-container{
+		margin-left: auto;
+		margin-right: auto;
+		display: inline-block;
+	}
+
+	.kana-selection-container .row{
+		text-align: left;
+	}
+
+	.kana-selection-container a{
+		color: #FFFFFF;
+		margin: 10px 10px;
+		text-align: center;
+	}
+
     </style>
 </head>
 <body>
@@ -122,7 +147,7 @@
 			</a>
      	</div>
      	<div class="buttons buttons-start">
-            <label class="radio primary">
+          <label class="radio primary">
             <input type="radio" name="kana" id="hiragana" value="hiragana" data-toggle="radio" checked="checked">
             Hiragana
           </label>
@@ -134,6 +159,85 @@
  				<span class='start'>Start</span>
  				<span class="fui-arrow-right"></span>
  			</a>
+     	</div>
+     	<div class="kana-selection-block">
+     		<div class="kana-selection-container">
+				<div class="row">
+					  <label class="checkbox">
+					  <input type="checkbox" value="" id="checkbox1" data-toggle="checkbox">
+					  </label>
+						
+					  <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+					    Single toggle
+					  </button>
+					  <a class="btn btn-huge btn-info kana-selection">あ</a>
+					  <a class="btn btn-huge btn-info kana-selection">い</a>
+					  <a class="btn btn-huge btn-info kana-selection">う</a>
+					  <a class="btn btn-huge btn-info kana-selection">え</a>
+					  <a class="btn btn-huge btn-info kana-selection">お</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">か</a>
+					  <a class="btn btn-huge btn-info kana-selection">き</a>
+					  <a class="btn btn-huge btn-info kana-selection">く</a>
+					  <a class="btn btn-huge btn-info kana-selection">け</a>
+					  <a class="btn btn-huge btn-info kana-selection">こ</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">さ</a>
+					  <a class="btn btn-huge btn-info kana-selection">し</a>
+					  <a class="btn btn-huge btn-info kana-selection">す</a>
+					  <a class="btn btn-huge btn-info kana-selection">せ</a>
+					  <a class="btn btn-huge btn-info kana-selection">そ</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">た</a>
+					  <a class="btn btn-huge btn-info kana-selection">ち</a>
+					  <a class="btn btn-huge btn-info kana-selection">つ</a>
+					  <a class="btn btn-huge btn-info kana-selection">て</a>
+					  <a class="btn btn-huge btn-info kana-selection">と</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">な</a>
+					  <a class="btn btn-huge btn-info kana-selection">に</a>
+					  <a class="btn btn-huge btn-info kana-selection">ぬ</a>
+					  <a class="btn btn-huge btn-info kana-selection">ね</a>
+					  <a class="btn btn-huge btn-info kana-selection">の</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">は</a>
+					  <a class="btn btn-huge btn-info kana-selection">ひ</a>
+					  <a class="btn btn-huge btn-info kana-selection">ふ</a>
+					  <a class="btn btn-huge btn-info kana-selection">へ</a>
+					  <a class="btn btn-huge btn-info kana-selection">ほ</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">ま</a>
+					  <a class="btn btn-huge btn-info kana-selection">み</a>
+					  <a class="btn btn-huge btn-info kana-selection">む</a>
+					  <a class="btn btn-huge btn-info kana-selection">め</a>
+					  <a class="btn btn-huge btn-info kana-selection">も</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">や</a>
+					  <a class="btn btn-huge btn-info kana-selection">ゆ</a>
+					  <a class="btn btn-huge btn-info kana-selection">よ</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">ら</a>
+					  <a class="btn btn-huge btn-info kana-selection">り</a>
+					  <a class="btn btn-huge btn-info kana-selection">る</a>
+					  <a class="btn btn-huge btn-info kana-selection">れ</a>
+					  <a class="btn btn-huge btn-info kana-selection">ろ</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">わ</a>
+					  <a class="btn btn-huge btn-info kana-selection">を</a>
+				</div> <!-- /row -->                                  
+				<div class="row">                                     
+					  <a class="btn btn-huge btn-info kana-selection">ん</a>
+				</div> <!-- /row -->
+			</div>
      	</div>
      </div>
 	<script src="dist/js/vendor/jquery.min.js"></script>
