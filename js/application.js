@@ -515,10 +515,6 @@ var kanaGroupIndices = [
 	46
 ];
 
-var minKanaGroupIndex = 3;
-var maxKanaGroupIndex = 3;
-var numKana = 10;
-
 var whatDoIKnowOriginal = [
 	'あ', 'い', 'う', 'え', 'お', 
 	'か', 'き', 'く', 'け', 'こ',
@@ -549,6 +545,8 @@ var whatDoIKnowOriginal = [
 	'びゃ', 'びゅ', 'びょ',
 	'ぴゃ', 'ぴょ', 'ぴょ'
 ];
+
+var numKana = 10;
 
 var HIRAGANA_START = 0x3041;
 var HIRAGANA_END = 0x3096;
@@ -644,27 +642,6 @@ var romajiToKana = function(romaji) {
 
 function rand(a, b) {
     return Math.floor(Math.random() * (b - a) + a);
-}
-
-Math.clamp = function(number, min, max) {
-    return Math.max(min, Math.min(number, max));
-}
-
-Math.increasing = function(a, b) {
-    return a > b ? [b, a] : [a, b];
-}
-
-function getKanaGroupBeginIndex(kanaGroupIndex) {
-    if (minKanaGroupIndex == 0)
-        return 0;
-
-    var groupIndex = Math.clamp((kanaGroupIndex - 1), 0, kanaGroupIndices.length - 1)
-    return kanaGroupIndices[groupIndex];
-}
-
-function getKanaGroupEndIndex(kanaGroupIndex) {
-    var groupIndex = Math.clamp(kanaGroupIndex, 0, kanaGroupIndices.length - 1)
-    return kanaGroupIndices[groupIndex];
 }
 
 function getListOfKana() {
