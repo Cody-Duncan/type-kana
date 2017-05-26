@@ -517,7 +517,7 @@ var kanaGroupIndices = [
 
 var minKanaGroupIndex = 3;
 var maxKanaGroupIndex = 3;
-var numKana = 100;
+var numKana = 10;
 
 var whatDoIKnowOriginal = [
 	'あ', 'い', 'う', 'え', 'お', 
@@ -554,6 +554,7 @@ var HIRAGANA_START = 0x3041;
 var HIRAGANA_END = 0x3096;
 var KATAKANA_START = 0x30A1;
 var KATAKANA_END = 0x30FA;
+var SLIDE_ANIM_MS = 200;
 
 var isCharInRange = function(char, start, end) {
     var code;
@@ -667,7 +668,7 @@ function getKanaGroupEndIndex(kanaGroupIndex) {
 }
 
 function getListOfKana() {
-    return whatDoIKnow;
+	return $('.kana-selection.btn-grey.active').text();
 }
 
 function getRandKana(listOfKana) {
@@ -686,6 +687,8 @@ $('.btn-start').click(function() {
 
     var parent= $(this).parent();
 
+	$('.kana-selection-block').fadeOut(200);
+
     $(this).parent().fadeOut(200, function() {
 
         $('.kana-container').html('').attr('style', '');
@@ -703,12 +706,21 @@ $('.btn-start').click(function() {
 		});
 
         $('.main-content').slideDown();
-        $(".main-content:hidden:first").toggleClass('hidden').hide().fadeIn("slow", function() {
-			$('.buttons-score').toggleClass('hidden').hide().fadeIn("fast");
+        $('.main-content').slideDown();
+         
+        $(".main-content").removeClass('hidden').hide().fadeIn("slow", function() {
+			if($('.buttons-score').hasClass('hidden')) {
+        		$('.buttons-score').removeClass('hidden');
+        		$('.buttons-score').hide();
+        		$('.buttons-score').hide().fadeIn("slow");
+        	}
+
 			$('.romaji-container').attr('contenteditable', true).focus();
 
 			$('.time').text('0:00');
-			$('.score').text('0/100');
+			$('.score').text('0 / '+numKana);
+
+			$(".main-content").focus();
 		});
     });
 });
@@ -729,28 +741,41 @@ $('.romaji-container').keyup(function() {
     if (kanaTyped) {
         console.log(kanaTyped, $('.white').first().text());
         if (kanaTyped == $('.white').first().text()) {
+        	// SUCCESS
             $(this).html('');
             var w = $('.white').first().addClass('green').removeClass('white').width();
+            if($('.kana-container').is(':animated')) {
+				$('.kana-container').finish();
+			}
             $('.kana-container').animate({
                 'margin-left': '-=' + w + 'px'
-            }, 200);
-            $('.score').html(++score + ' / 100');
+            }, SLIDE_ANIM_MS);
+            $('.score').html(++score + ' / ' + numKana);
         } else if ($(this).html() !== 'n') {
+        	// FAILURE
             $(this).html('');
             var w = $('.white').first().addClass('red').removeClass('white').width();
+            if($('.kana-container').is(':animated')) {
+			 $('.kana-container').finish();
+		}
             $('.kana-container').animate({
                 'margin-left': '-=' + w + 'px'
-            }, 200);
+            }, SLIDE_ANIM_MS);
         }
     } else if (!(romajiToKana($(this).text() + 'a') || romajiToKana($(this).text() + 'ha'))) {
         console.log(romajiToKana($(this).html() + 'a'));
         $(this).html('');
         var w = $('.white').first().addClass('red').removeClass('white').width();
+        if($('.kana-container').is(':animated')) {
+			 $('.kana-container').finish();
+		}
         $('.kana-container').animate({
             'margin-left': '-=' + w + 'px'
-        }, 200);
+        }, SLIDE_ANIM_MS);
     }
     if (!$('.white').length) {
+    	// RESTORE MENU
+    	
         $('.kana-container').animate({
             'margin-left': '-=' + $(window).width() / 2 + 'px'
         });
@@ -765,9 +790,40 @@ $('.romaji-container').keyup(function() {
         $('.main-container').animate({
             'margin-top': '-100px'
         });
+        $('.kana-selection-block').fadeIn();
         $('.buttons-start').fadeIn();
         $('.btn-start .start').text('Restart');
 
         started = false;
     }
 });
+
+
+$('.check-kanagroup > input').click(function(index) {
+	
+	var isChecked= $(this).prop('checked');
+	
+	$(this).parents('div').first().children('button').each(function(index) {
+		if(isChecked)
+		{
+			$(this).addClass('active');
+		}
+		else
+		{
+			$(this).removeClass('active');
+		}
+	});
+});
+
+$('.kana-selection').click(function (e) {
+	e.preventDefault();
+	e.stopImmediatePropagation();
+    $(this).toggleClass('active');
+    var atLeastOneActive= $(this).parents('div.row').children('button').hasClass('active');
+
+    var kanagroupCheckbox= $(this).parents('div.row').find('label > input');
+	kanagroupCheckbox.prop('checked', atLeastOneActive);
+});
+
+var k = $('.kana-selection');
+
