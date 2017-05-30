@@ -809,7 +809,7 @@ function shiftKanaRightSecretly()
     $('.kana-container').css('margin-left', (currentShift + totalWidthOfRemoved) + 'px');
 }
 
-$('.romaji-container').keydown(function () {
+$('.romaji-container').keyup(function () {
     if (!timer) {
         time = +new Date()
         timer = setInterval(function () {
