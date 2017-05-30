@@ -67,7 +67,7 @@
 	}
 
 	.buttons {
-		margin: 25px 20px;
+		margin: 25px 25px 10px;
 		text-align: center;
 	}
 
@@ -150,6 +150,11 @@
 		padding-left: 8px;
 	}
 
+	.kana-practice-length-block {
+		text-align: center;
+		display: block;
+	}
+
     </style>
 </head>
 <body>
@@ -186,6 +191,11 @@
  			</a>
      	</div>
      	<div class="kana-selection-block">
+			<div class="kana-practice-length-block"> 
+				<input type="checkbox" data-toggle="switch" name="info-square-switch" data-on-color="info" id="infinity-switch" checked>
+					<label class="bootstrap-switch-label"><span style="font-size: 150%">∞</span> Mode</label>
+				</input>
+			</div>
      		<div class="kana-selection-container">
 				<div class="row" id="kanagroup1">
 					<label class="checkbox check-kanagroup">
