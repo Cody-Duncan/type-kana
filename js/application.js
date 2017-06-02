@@ -277,6 +277,33 @@ var romajiToHiragana = {
     "ltsu": "っ"
 };
 
+var englishToJapaneseSpecialTokens = {
+    " ": [" ", "。", "\u00A0", "\u3000"], // space allowed to substitute "。" for typing simplicity, Non-Breaking Soace, Ideographic Space
+    ".": [ ".", "。", "・"],
+    ",": ["、"],
+    "'": ["「", "」"],
+    '"': ["『","』"],
+    "-": ["-", "〜", "ー", "ー"],
+    "?": ["?"],
+    "?": ["!"],
+    "/": ["/"],
+    "(": ["(", "（"], // Full Width Left Parenthesis
+    ")": [")", "）"], // Full Width Right Parenthesis
+    "{": ["{"],
+    "}": ["}"],
+    "+": ["+"],
+    "0": ["0"],
+    "1": ["1"],
+    "2": ["2"],
+    "3": ["3"],
+    "4": ["4"],
+    "5": ["5"],
+    "6": ["6"],
+    "7": ["7"],
+    "8": ["8"],
+    "9": ["9"]
+}
+
 var hiraganaToRomaji = {
     "あ": ["a"],
     "い": ["i", "yi"],
@@ -551,10 +578,10 @@ var HIRAGANA_END = 0x3096;
 var KATAKANA_START = 0x30A1;
 var KATAKANA_END = 0x30FA;
 var SLIDE_ANIM_MS = 200;
-var KANA_FILL_COUNT= 20;
+var KANA_FILL_COUNT = 20;
 
 var kanaAttemptCount = KANA_FILL_COUNT;
-var maxMostRecentCharactersWidths= 20;
+var maxMostRecentCharactersWidths = 20;
 
 var isCharInRange = function (char, start, end) {
     var code;
@@ -592,9 +619,40 @@ var isCharKana = function (char) {
     return isCharHiragana(char) || isCharKatakana(char);
 };
 
+var isCharEnglishSpecialToken  = function(char) {
+    return englishToJapaneseSpecialTokens[char] != null;
+};
+
+var isCharJapaneseSpecialToken = function(char) {
+    var result = false;
+    for(key in englishToJapaneseSpecialTokens)
+    {
+        var JapaneseChars = englishToJapaneseSpecialTokens[key];
+        if(JapaneseChars.contains(char))
+        {
+            result = true;
+            break;
+        }
+    }
+    return result;
+};
+
 var _isCharNotKana = function (char) {
     return !isCharHiragana(char) && !isCharKatakana(char);
 };
+
+var isStringTypeable= function(str) {
+    var isValid= true;
+    for(var k= 0; isValid && (k < str.length); ++k)
+    {
+        isValid = 
+            isCharHiragana(str[k]) || 
+            isCharKatakana(str[k]) ||
+            isCharJapaneseSpecialToken(str[k]);
+    }
+    return isValid;
+};
+
 
 var katakanaToHiragana = function (kata) {
     var code, hira, hiraChar, kataChar, _i, _len, _ref;
@@ -637,16 +695,41 @@ var hiraganaToKatakana = function (hira) {
 var romajiToKana = function (romaji) {
     var isKatakana = $('input[name="kana"]:checked').val() == 'katakana';
     var hiragana = romajiToHiragana[romaji];
+    
     if (!hiragana)
-        return null;
-    return isKatakana ? hiraganaToKatakana(hiragana) : hiragana;
+    {
+        var whitespace= englishToJapaneseSpecialTokens[romaji];
+        return (!whitespace) ? null : whitespace;
+    }
+    // must return an array
+    return isKatakana ? [hiraganaToKatakana(hiragana)] : [hiragana];
+};
+
+Array.prototype.contains = function(element){
+    return this.indexOf(element) > -1;
 };
 
 function rand(a, b) {
     return Math.floor(Math.random() * (b - a) + a);
 }
 
-function getListOfKana() {
+function isInfinityMode() {
+    return $('#infinity-switch').is(':checked');
+}
+
+function isWordMode() {
+    return $('#word-mode-switch').is(':checked');
+}
+
+function isHiraganaMode() {
+    return $('input[name="kana"]:checked').val() == 'hiragana';
+}
+
+function isKatakanaMode() {
+    return $('input[name="kana"]:checked').val() == 'katakana';
+}
+
+function getListOfSelectedKana() {
     return $('.kana-selection.btn-grey.active').text();
 }
 
@@ -654,35 +737,70 @@ function getRandKana(listOfKana) {
     return listOfKana[rand(0, listOfKana.length)];
 }
 
-function clearKana()
-{
+function getRandWord(listOfWords){
+    return listOfWords[rand(0, listOfWords.length)];
+}
+
+function getListOfRandomSelectedKana(selectedKanaList) {
+    var output = [];
+    
+    for (var i = 0; i < KANA_FILL_COUNT; i++) {
+        var kanaChar = getRandKana(selectedKanaList);
+        kanaChar = isKatakanaMode() ? hiraganaToKatakana(kanaChar) : kanaChar;
+        output.push(kanaChar);
+    }
+
+    return output;
+}
+
+function getListOfRandomWords(selectedKanaList){
+    var output = [];
+    for (var i = 0; i < KANA_FILL_COUNT;) {
+        var randWord= getRandWord(wordCorpus).jap;
+        if(isStringTypeable(randWord))
+        {
+            output.push(randWord);
+            i += randWord.length;
+        }
+        else
+        {
+            console.log("Cannot Type: " + randWord);
+        }
+    }
+    return output;
+}
+
+function clearKana() {
     $('.kana-container').html('').attr('style', '');
 }
 
 function fillKana() {
-    var kanaList = getListOfKana();
-    for (var i = 0; i < KANA_FILL_COUNT; i++) {
-        var kanaChar = getRandKana(kanaList);
-        var isKatakana = $('input[name="kana"]:checked').val() == 'katakana';
-        kanaChar = isKatakana ? hiraganaToKatakana(kanaChar) : kanaChar;
-
-        $('.kana-container').append('<span class="white">' + kanaChar + '</span>');
+    if(isWordMode())
+    {
+        var selectedKanaList = getListOfSelectedKana();
+        var randWordList= getListOfRandomWords(selectedKanaList);
+        for (var i = 0; i < randWordList.length; i++) {
+            for (var k = 0; k < randWordList[i].length; k++) {
+                $('.kana-container').append('<span class="white">' + randWordList[i][k] + '</span>');
+            }
+            $('.kana-container').append('<span class="white">。</span>');
+        }
+    }
+    else // Kana Mode
+    {
+        var selectedKanaList = getListOfSelectedKana();
+        var randKanaList= getListOfRandomSelectedKana(selectedKanaList);
+        for (var i = 0; i < randKanaList.length; i++) {
+            $('.kana-container').append('<span class="white">' + randKanaList[i] + '</span>');
+        }
     }
 }
 
-function isInfinityMode()
-{
-    return $('#infinity-switch').is(':checked');
-}
-
-function getKanaCountString()
-{
-    if(isInfinityMode())
-    {
+function getKanaCountString() {
+    if (isInfinityMode()) {
         return kanaAttemptCount.toString();
     }
-    else
-    {
+    else {
         return KANA_FILL_COUNT.toString();
     }
 }
@@ -695,12 +813,12 @@ var score = 0, time, timer;
 var started = false;
 
 
-function resetKanaAttemptCount(){
-    kanaAttemptCount= isInfinityMode() ? 0 : KANA_FILL_COUNT;
+function resetKanaAttemptCount() {
+    kanaAttemptCount = isInfinityMode() ? 0 : KANA_FILL_COUNT;
 }
 
 function incrementKanaAttemptCount() {
-    if(isInfinityMode()) ++kanaAttemptCount;
+    if (isInfinityMode())++kanaAttemptCount;
 }
 
 
@@ -769,22 +887,19 @@ $(document).keyup(function (e) {
     }
 });
 
-function updateScoreBoard()
-{
-     $('.score').html(score+ ' / ' + kanaAttemptCount);
+function updateScoreBoard() {
+    $('.score').html(score + ' / ' + kanaAttemptCount);
 }
 
-function sumOfMostRecentCharacterWidths()
-{
-    return mostRecentCharactersWidths.reduce(function(acc, val) { return acc + val;}, 0);
+function sumOfMostRecentCharacterWidths() {
+    return mostRecentCharactersWidths.reduce(function (acc, val) { return acc + val; }, 0);
 }
 
-var sumOFAllShifts= 0;
+var sumOFAllShifts = 0;
 
-function shiftKanaLeft(widthOfCharacter)
-{
+function shiftKanaLeft(widthOfCharacter) {
     sumOFAllShifts += widthOfCharacter;
-    
+
     if ($('.kana-container').is(':animated')) {
         $('.kana-container').finish();
     }
@@ -793,16 +908,15 @@ function shiftKanaLeft(widthOfCharacter)
     }, SLIDE_ANIM_MS);
 }
 
-function shiftKanaRightSecretly()
-{
-//mostRecentCharactersWidths.reduce(function(acc, val) { return acc + val;}, 0);
+function shiftKanaRightSecretly() {
+    //mostRecentCharactersWidths.reduce(function(acc, val) { return acc + val;}, 0);
 
-    var currentShift= parseInt($('.kana-container').css('margin-left'), 10);
+    var currentShift = parseInt($('.kana-container').css('margin-left'), 10);
 
-    var oldKana= $('.kana-container .red,.green').slice(0, -KANA_FILL_COUNT);
+    var oldKana = $('.kana-container .red,.green').slice(0, -KANA_FILL_COUNT);
 
-    var totalWidthOfRemoved= 0;
-    oldKana.each(function() { totalWidthOfRemoved += $(this).width(); });
+    var totalWidthOfRemoved = 0;
+    oldKana.each(function () { totalWidthOfRemoved += $(this).width(); });
 
     oldKana.remove();
 
@@ -822,14 +936,11 @@ $('.romaji-container').keyup(function () {
         }, 1000);
     }
 
-    if (isInfinityMode())
-    {
-        if($('.white').length < 30)
-        {
+    if (isInfinityMode()) {
+        if ($('.white').length < 30) {
             fillKana();
         }
-        else if($('.kana-container span').length > 100)
-        {
+        else if ($('.kana-container span').length > 100) {
             if ($('.kana-container').is(':animated')) {
                 $('.kana-container').promise().done(shiftKanaRightSecretly); // do it after the animation finishes
             }
@@ -839,38 +950,55 @@ $('.romaji-container').keyup(function () {
         }
     }
 
-    var kanaTyped = romajiToKana($(this).text());
-    if (kanaTyped) {
+    var typedCharacters= $(this).text();
+    var kanaTyped = romajiToKana(typedCharacters);
+
+    if(typedCharacters.length == 0)
+    {
+        // DO NOTHING. No character data
+    }
+    else if (kanaTyped) 
+    {
         console.log(kanaTyped, $('.white').first().text());
-        
-        if (kanaTyped == $('.white').first().text()) {
+
+        if (kanaTyped.contains($('.white').first().text())) {
             // SUCCESS
             $(this).html('');
             var w = $('.white').first().addClass('green').removeClass('white').width();
             shiftKanaLeft(w);
 
-            ++score;
-            incrementKanaAttemptCount();
-            updateScoreBoard();
-           
+            if(!isCharEnglishSpecialToken(typedCharacters)) {
+                ++score;
+                incrementKanaAttemptCount();
+                updateScoreBoard();
+            }
         } else if ($(this).html() !== 'n') {
             // FAILURE
             $(this).html('');
             var w = $('.white').first().addClass('red').removeClass('white').width();
             shiftKanaLeft(w);
             
-            incrementKanaAttemptCount();
-            updateScoreBoard();
+            if(!isCharEnglishSpecialToken(typedCharacters)) {
+                incrementKanaAttemptCount();
+                updateScoreBoard();
+            }
+            
         }
-    } else if (!(romajiToKana($(this).text() + 'a') || romajiToKana($(this).text() + 'ha'))) {
+    }
+    else if (
+        !(romajiToKana(typedCharacters + 'a') || 
+        romajiToKana(typedCharacters + 'ha'))) 
+    {
         // THAT WASN'T A KANA
         console.log(romajiToKana($(this).html() + 'a'));
         $(this).html('');
         var w = $('.white').first().addClass('red').removeClass('white').width();
         shiftKanaLeft(w);
 
-        incrementKanaAttemptCount();
-        updateScoreBoard();
+        if(!isCharEnglishSpecialToken(typedCharacters)) {
+            incrementKanaAttemptCount();
+            updateScoreBoard();
+        }
     }
 
     console.log("length: ", $('.white').length);
@@ -907,12 +1035,10 @@ $('.kana-selection').click(function (e) {
 });
 
 $('#infinity-switch').on('switchChange.bootstrapSwitch', function (event, state) {
-    if($('#infinity-switch').is(':checked'))
-    {
-        kanaAttemptCount= 1000000000;
+    if ($('#infinity-switch').is(':checked')) {
+        kanaAttemptCount = 1000000000;
     }
-    else
-    {
-        kanaAttemptCount= 100;
+    else {
+        kanaAttemptCount = 100;
     }
 });
