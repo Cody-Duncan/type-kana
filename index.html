@@ -150,8 +150,21 @@
 		padding-left: 8px;
 	}
 
+	.mode-switches-block {
+		text-align: center !important;
+		margin-left: auto;
+		margin-right: auto;
+		display: inline-block;
+		padding-bottom: 10px;
+	}
+
 	.kana-practice-length-block {
-		text-align: center;
+		text-align: left;
+		display: block;
+	}
+
+	.word-mode-block {
+		text-align: left;
 		display: block;
 	}
 
@@ -191,11 +204,19 @@
  			</a>
      	</div>
      	<div class="kana-selection-block">
-			<div class="kana-practice-length-block"> 
-				<input type="checkbox" data-toggle="switch" name="info-square-switch" data-on-color="info" id="infinity-switch" checked>
-					<label class="bootstrap-switch-label"><span style="font-size: 150%">∞</span> Mode</label>
-				</input>
+			<div class="mode-switches-block">
+				<div class="kana-practice-length-block"> 
+					<input type="checkbox" data-toggle="switch" name="info-square-switch" data-on-color="info" id="infinity-switch" checked>
+						<label class="bootstrap-switch-label"><span style="font-size: 150%">∞</span> Mode</label>
+					</input>
+				</div>
+				<div class="word-mode-block"> 
+					<input type="checkbox" data-toggle="switch" name="info-square-switch" data-on-color="info" id="word-mode-switch" checked>
+						<label class="bootstrap-switch-label">Word Mode</label>
+					</input>
+				</div>
 			</div>
+			<br>
      		<div class="kana-selection-container">
 				<div class="row" id="kanagroup1">
 					<label class="checkbox check-kanagroup">
@@ -305,6 +326,7 @@
     <script src="dist/js/vendor/video.js"></script>
     <script src="dist/js/flat-ui.min.js"></script>
     <script src="docs/assets/js/application.js"></script>
+	<script src="js/wordCorpus.js"></script>
     <script src="js/application.js"></script>
 	<script>
 	
