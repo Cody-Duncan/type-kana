@@ -278,6 +278,7 @@ var romajiToHiragana = {
 };
 
 var englishToJapaneseSpecialTokens = {
+    "\u00A0" : [" ", "。", "\u00A0", "\u3000"], //nbsp
     " ": [" ", "。", "\u00A0", "\u3000"], // space allowed to substitute "。" for typing simplicity, Non-Breaking Soace, Ideographic Space
     ".": [ ".", "。", "・"],
     ",": ["、"],
@@ -952,6 +953,7 @@ $('.romaji-container').keyup(function () {
 
     var typedCharacters= $(this).text();
     var kanaTyped = romajiToKana(typedCharacters);
+    var currentKana = $('.white').first().text();
 
     if(typedCharacters.length == 0)
     {
@@ -967,7 +969,7 @@ $('.romaji-container').keyup(function () {
             var w = $('.white').first().addClass('green').removeClass('white').width();
             shiftKanaLeft(w);
 
-            if(!isCharEnglishSpecialToken(typedCharacters)) {
+            if(!isCharJapaneseSpecialToken(currentKana)) {
                 ++score;
                 incrementKanaAttemptCount();
                 updateScoreBoard();
@@ -978,7 +980,7 @@ $('.romaji-container').keyup(function () {
             var w = $('.white').first().addClass('red').removeClass('white').width();
             shiftKanaLeft(w);
             
-            if(!isCharEnglishSpecialToken(typedCharacters)) {
+            if(!isCharJapaneseSpecialToken(currentKana)) {
                 incrementKanaAttemptCount();
                 updateScoreBoard();
             }
@@ -995,7 +997,7 @@ $('.romaji-container').keyup(function () {
         var w = $('.white').first().addClass('red').removeClass('white').width();
         shiftKanaLeft(w);
 
-        if(!isCharEnglishSpecialToken(typedCharacters)) {
+        if(!isCharJapaneseSpecialToken(currentKana)) {
             incrementKanaAttemptCount();
             updateScoreBoard();
         }
