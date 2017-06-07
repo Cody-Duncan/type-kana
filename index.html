@@ -112,11 +112,19 @@
 	.kana-selection-container{
 		margin-left: auto;
 		margin-right: auto;
-		display: inline-block;
+		display: table;
 	}
 
 	.kana-selection-container .row{
 		text-align: left;
+		margin-right: -5px; /* this creates padding between columns */
+   	 	margin-left: -5px;
+		width: 900px;
+	}
+
+	.kana-selection-container .col{
+		text-align: left;
+		padding-bottom: 45px;
 	}
 
 	.kana-selection-container button{
@@ -124,7 +132,7 @@
 		margin: 2px 2px;
 		padding:  5px 8px;
 		text-align: center;
-		font-size: 20pt
+		font-size: 20pt;
 	}
 
 	.btn-grey {
@@ -217,109 +225,13 @@
 				</div>
 			</div>
 			<br>
-     		<div class="kana-selection-container">
-				<div class="row" id="kanagroup1">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group1" data-toggle="checkbox" checked="true">
-					</label>
-					<button type="button" class="btn btn-primary btn-huge kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">あ</button>
-					<button type="button" class="btn btn-primary btn-huge kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">い</button>
-					<button type="button" class="btn btn-primary btn-huge kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">う</button>
-					<button type="button" class="btn btn-primary btn-huge kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">え</button>
-					<button type="button" class="btn btn-primary btn-huge kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">お</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup2">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group2" data-toggle="checkbox" checked="true">
-					</label>                                
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">か</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">き</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">く</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">け</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">こ</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup3">      
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group3" data-toggle="checkbox" checked="true">
-					</label>                               
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">さ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">し</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">す</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">せ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">そ</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup4">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group4" data-toggle="checkbox" checked="true">
-					</label>                                        
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">た</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ち</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">つ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">て</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">と</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup5">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group5" data-toggle="checkbox" checked="true">
-					</label>                                     
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">な</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">に</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ぬ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ね</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">の</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup6">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group6" data-toggle="checkbox" checked="true">
-					</label>                                  
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">は</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ひ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ふ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">へ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ほ</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup7">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group7" data-toggle="checkbox" checked="true">
-					</label>                                      
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ま</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">み</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">む</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">め</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">も</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup8">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group8" data-toggle="checkbox" checked="true">
-					</label>                                     
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">や</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ゆ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">よ</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup9">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group9" data-toggle="checkbox" checked="true">
-					</label>                                       
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ら</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">り</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">る</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">れ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ろ</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup10">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group10" data-toggle="checkbox" checked="true">
-					</label>                                     
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">わ</button>
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">を</button>
-				</div> <!-- /row -->                                  
-				<div class="row" id="kanagroup11">
-					<label class="checkbox check-kanagroup">
-					<input type="checkbox" value="" id="group11" data-toggle="checkbox" checked="true">
-					</label>                                     
-					<button type="button" class="btn btn-primary btn-huge btn-info kana-selection btn-grey active" data-toggle="button" aria-pressed="false" autocomplete="off">ん</button>
-				</div> <!-- /row -->
-			</div>
+     		<div class="kana-selection-container container-fluid">
+				<div class="row" id="mainrow">
+					<div class="col-sm-4 col" id="kanaColumn1"></div>
+					<div class="col-sm-4 col" id="kanaColumn2"></div>
+					<div class="col-sm-4 col" id="kanaColumn3"></div>
+				</div> <!-- mainrow -->
+			</div> <!-- kana selection container -->
      	</div>
      </div>
 	<script src="dist/js/vendor/jquery.min.js"></script>
