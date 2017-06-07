@@ -515,64 +515,72 @@ var hiraganaToRomaji = {
 };
 
 
-var whatDoIKnow = [				 // end_index
-    'あ', 'い', 'う', 'え', 'お', // 5
-    'か', 'き', 'く', 'け', 'こ', // 10				 
-    'さ', 'し', 'す', 'せ', 'そ', // 15
-    'た', 'ち', 'つ', 'て', 'と', // 20
-    'な', 'に', 'ぬ', 'ね', 'の', // 25
-    'は', 'ひ', 'ふ', 'へ', 'ほ', // 30
-    'ま', 'み', 'む', 'め', 'も', // 35
-    'や', 'ゆ', 'よ',             // 38
-    'ら', 'り', 'る', 'れ', 'ろ', // 43
-    'わ', 'を',                  // 45
-    'ん',                        // 46
-];
-
-var kanaGroupIndices = [
-    5,
-    10,
-    15,
-    20,
-    25,
-    30,
-    35,
-    38,
-    43,
-    45,
-    46
-];
-
-var whatDoIKnowOriginal = [
-    'あ', 'い', 'う', 'え', 'お',
-    'か', 'き', 'く', 'け', 'こ',
-    'さ', 'し', 'す', 'せ', 'そ',
-    'た', 'ち', 'つ', 'て', 'と',
-    'な', 'に', 'ぬ', 'ね', 'の',
-    'は', 'ひ', 'ふ', 'へ', 'ほ',
-    'ま', 'み', 'む', 'め', 'も',
+var whatDoIKnow = [
+    'あ', 'い', 'う', 'え', 'お', 
+    'か', 'き', 'く', 'け', 'こ', 	 
+    'さ', 'し', 'す', 'せ', 'そ', 
+    'た', 'ち', 'つ', 'て', 'と', 
+    'な', 'に', 'ぬ', 'ね', 'の', 
+    'は', 'ひ', 'ふ', 'へ', 'ほ', 
+    'ま', 'み', 'む', 'め', 'も', 
     'や', 'ゆ', 'よ',
-    'ら', 'り', 'る', 'れ', 'ろ',
+    'ら', 'り', 'る', 'れ', 'ろ', 
     'わ', 'を',
     'ん',
-    'が', 'ぎ', 'ぐ', 'げ', 'ご',
-    'ざ', 'じ', 'ず', 'ぜ', 'そ',
-    'だ', 'ぢ', 'づ', 'で', 'ど',
-    'ば', 'び', 'ぶ', 'べ', 'ぼ',
-    'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
+    'が','ぎ','ぐ','げ','ご',
+    'ざ','じ','ず','ぜ','ぞ',
+    'だ','ぢ','づ','で','ど',
+    'ば','び','ぶ','べ','ぼ',
+    'ぱ','ぴ','ぷ','ぺ','ぽ',
+    'ゔ', // vu (bu)
     'きゃ', 'きゅ', 'きょ',
     'しゃ', 'しゅ', 'しょ',
     'ちゃ', 'ちゅ', 'ちょ',
     'にゃ', 'にゅ', 'にょ',
-    'ひゃ', 'にゅ', 'にょ',
+    'ひゃ', 'ひゅ', 'ひょ',
     'みゃ', 'みゅ', 'みょ',
     'りゃ', 'りゅ', 'りょ',
     'ぎゃ', 'ぎゅ', 'ぎょ',
     'じゃ', 'じゅ', 'じょ',
-    // 'ぢゃ', 'ぢゅ', 'ぢょ',
     'びゃ', 'びゅ', 'びょ',
-    'ぴゃ', 'ぴょ', 'ぴょ'
+    'ぴゃ', 'ぴゅ', 'ぴょ',
 ];
+
+var kanaDisplayStructure = [
+    [ 'あ', 'い', 'う', 'え', 'お' ],
+    [ 'か', 'き', 'く', 'け', 'こ' ],
+    [ 'さ', 'し', 'す', 'せ', 'そ' ],
+    [ 'た', 'ち', 'つ', 'て', 'と' ],
+    [ 'な', 'に', 'ぬ', 'ね', 'の' ],
+    [ 'は', 'ひ', 'ふ', 'へ', 'ほ' ],
+    [ 'ま', 'み', 'む', 'め', 'も' ],
+    [ 'や', 'ゆ', 'よ' ],
+    [ 'ら', 'り', 'る', 'れ', 'ろ' ],
+    [ 'わ', 'を' ],
+    [ 'ん' ], 
+    // end column 0
+    [ 'が','ぎ','ぐ','げ','ご' ],
+    [ 'ざ','じ','ず','ぜ','ぞ' ],
+    [ 'だ','ぢ','づ','で','ど' ],
+    [ 'ば','び','ぶ','べ','ぼ' ],
+    [ 'ぱ','ぴ','ぷ','ぺ','ぽ' ],
+    [ 'ゔ' ], // vu (bu )
+    // end column 1
+    [ 'きゃ', 'きゅ', 'きょ' ],
+    [ 'しゃ', 'しゅ', 'しょ' ],
+    [ 'ちゃ', 'ちゅ', 'ちょ' ],
+    [ 'にゃ', 'にゅ', 'にょ' ],
+    [ 'ひゃ', 'ひゅ', 'ひょ' ],
+    [ 'みゃ', 'みゅ', 'みょ' ],
+    [ 'りゃ', 'りゅ', 'りょ' ],
+    [ 'ぎゃ', 'ぎゅ', 'ぎょ' ],
+    [ 'じゃ', 'じゅ', 'じょ' ],
+    [ 'びゃ', 'びゅ', 'びょ' ],
+    [ 'ぴゃ', 'ぴゅ', 'ぴょ' ],
+    // end column 2
+];
+
+var kanaDisplayStructureColumnEndIndices = [11, 17, 28]
 
 var HIRAGANA_START = 0x3041;
 var HIRAGANA_END = 0x3096;
@@ -1011,12 +1019,9 @@ $('.romaji-container').keyup(function () {
     }
 });
 
-
-$('.check-kanagroup > input').click(function (index) {
-
+function handleKanaGroupCheckboxOnClick(event) {
     var isChecked = $(this).prop('checked');
-
-    $(this).parents('div').first().children('button').each(function (index) {
+    $(this).parents('label').siblings('button').each(function () {
         if (isChecked) {
             $(this).addClass('active');
         }
@@ -1024,17 +1029,17 @@ $('.check-kanagroup > input').click(function (index) {
             $(this).removeClass('active');
         }
     });
-});
+}
 
-$('.kana-selection').click(function (e) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
+ function handleKanaSelectionOnClick(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
     $(this).toggleClass('active');
     var atLeastOneActive = $(this).parents('div.row').children('button').hasClass('active');
 
-    var kanagroupCheckbox = $(this).parents('div.row').find('label > input');
+    var kanagroupCheckbox = $(this).siblings('label').find('input');
     kanagroupCheckbox.prop('checked', atLeastOneActive);
-});
+}
 
 $('#infinity-switch').on('switchChange.bootstrapSwitch', function (event, state) {
     if ($('#infinity-switch').is(':checked')) {
@@ -1042,5 +1047,41 @@ $('#infinity-switch').on('switchChange.bootstrapSwitch', function (event, state)
     }
     else {
         kanaAttemptCount = 100;
+    }
+});
+
+$('.kana-selection-container > .row > .col').each(function(index) {
+
+    var startStructureIndex= (index > 0) ? kanaDisplayStructureColumnEndIndices[index-1] : 0;
+    var endStructureIndex= kanaDisplayStructureColumnEndIndices[index];
+    
+    if(endStructureIndex)
+    {
+        for (var rowIndex= startStructureIndex; rowIndex < endStructureIndex; ++rowIndex)
+        {
+            var rowElement = $('<div></div>', {"class":"row", id: (("kanaGroup" + index) + rowIndex)});
+
+            var checkboxLabel = $("<label></label>", {"class": "checkbox check-kanagroup"});
+            var checkboxInput = $("<input>", {"type":"checkbox", "value":"", "id":"group1", "data-toggle":"checkbox", "checked":"true"});
+            checkboxInput.click(handleKanaGroupCheckboxOnClick);
+            $(checkboxLabel).append(checkboxInput);
+            rowElement.append(checkboxLabel);
+
+            var rowKana = kanaDisplayStructure[rowIndex];
+            for (var kanaIndex= 0; kanaIndex < rowKana.length; ++kanaIndex)
+            {
+               var kanaButton = $("<button>", {"class": "btn btn-primary btn-huge kana-selection btn-grey active", "data-toggle":"button", "aria-pressed":"false", "autocomplete":"off"});
+               kanaButton.click(handleKanaSelectionOnClick);
+               kanaButton.append(rowKana[kanaIndex]);
+
+                rowElement.append(kanaButton);
+            }
+
+            $(this).append(rowElement);
+        }
+    }
+    else
+    {
+        console.log("bad column index for kana-selection-container");
     }
 });
