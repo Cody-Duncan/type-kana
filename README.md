@@ -7,4 +7,4 @@ In this game, you are given to read 100 random Hiragana / Katakana characters, a
 
 If someone is learning Japanese, do give it a try and let me know your scores!
 
-[Click here to play.](http://lab.fleon.org/type-kana/)
+Try it out: [https://cody-duncan.github.io/type-kana/](https://cody-duncan.github.io/type-kana/)
