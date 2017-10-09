@@ -962,7 +962,7 @@ $('.romaji-container').keyup(function () {
     var typedCharacters= $(this).text();
     var kanaTyped = romajiToKana(typedCharacters);
     var currentKana = $('.white').first().text();
-
+    var currentRomaji = hiraganaToRomaji[currentKana][0];
     if(typedCharacters.length == 0)
     {
         // DO NOTHING. No character data
@@ -985,7 +985,11 @@ $('.romaji-container').keyup(function () {
         } else if ($(this).html() !== 'n') {
             // FAILURE
             $(this).html('');
-            var w = $('.white').first().addClass('red').removeClass('white').width();
+            var w = $('.white').first()
+                .append('<span class="small_above">' + currentRomaji + '')
+                .addClass('red')
+                .removeClass('white')
+                .width();
             shiftKanaLeft(w);
             
             if(!isCharJapaneseSpecialToken(currentKana)) {
