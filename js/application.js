@@ -374,21 +374,21 @@ var hiraganaToRomaji = {
     "ず": ["zu"],
     "ぜ": ["ze"],
     "ぞ": ["zo"],
-    "しゃ": ["sya", "sha"],
+    "しゃ": ["sha", "sya"],
     "しぃ": ["syi"],
-    "しゅ": ["syu", "shu"],
-    "しぇ": ["sye", "she"],
-    "しょ": ["syo", "sho"],
+    "しゅ": ["shu", "syu"],
+    "しぇ": ["she", "sye"],
+    "しょ": ["sho", "syo"],
     "すぁ": ["swa"],
     "すぃ": ["swi"],
     "すぅ": ["swu"],
     "すぇ": ["swe"],
     "すぉ": ["swo"],
-    "じゃ": ["zya", "ja", "jya"],
-    "じぃ": ["zyi", "jyi"],
-    "じゅ": ["zyu", "ju", "jyu"],
-    "じぇ": ["zye", "je", "jye"],
-    "じょ": ["zyo", "jo", "jyo"],
+    "じゃ": ["ja", "zya", "jya"],
+    "じぃ": ["jyi", "zyi"],
+    "じゅ": ["ju", "zyu", "jyu"],
+    "じぇ": ["je", "zye", "jye"],
+    "じょ": ["jo", "zyo", "jyo"],
     "た": ["ta"],
     "ち": ["chi", "ti"],
     "つ": ["tsu", "tu"],
@@ -398,7 +398,7 @@ var hiraganaToRomaji = {
     "ちゃ": ["cha", "tya", "cya"],
     "ちぃ": ["tyi", "cyi"],
     "ちゅ": ["chu", "tyu", "cyu"],
-    "ちぇ": ["tye", "che", "cye"],
+    "ちぇ": ["che", "tye", "cye"],
     "ちょ": ["cho", "tyo", "cyo"],
     "つぁ": ["tsa"],
     "つぃ": ["tsi"],
@@ -446,7 +446,7 @@ var hiraganaToRomaji = {
     "にょ": ["nyo"],
     "は": ["ha"],
     "ひ": ["hi"],
-    "ふ": ["hu", "fu"],
+    "ふ": ["fu", "hu"],
     "へ": ["he"],
     "ほ": ["ho"],
     "ひゃ": ["hya"],
@@ -968,19 +968,13 @@ function startTimer()
     }, 1000);
 }
 
-function updateSuccessfulKanaEntry(currentKanaElements)
+function updateSuccessfulKanaEntry(currentKanaElement)
 {
-    var currentKana = "";
-    currentKanaElements.forEach(function(element) {
-        currentKana += element.text();
-    });
-
+    var currentKana = currentKanaElement.text();
     var currentRomaji = kanaToRomaji(currentKana);
 
-    currentKanaElements.forEach(function(element) {
-        var kanaWidth = element.addClass('green').removeClass('white').width();
-        shiftKanaLeft(kanaWidth);
-    });
+    var kanaWidth = currentKanaElement.addClass('green').removeClass('white').width();
+    shiftKanaLeft(kanaWidth);
 
     if(!isCharJapaneseSpecialToken(currentKana)) 
     {
@@ -990,31 +984,18 @@ function updateSuccessfulKanaEntry(currentKanaElements)
     }
 }
 
-function updateFailedKanaEntry(currentKanaElements)
+function updateFailedKanaEntry(currentKanaElement)
 {
-    var currentKana = "";
-    currentKanaElements.forEach(function(element) {
-        currentKana += element.text();
-    });
-
+    var currentKana = currentKanaElement.text();
     var currentRomaji = kanaToRomaji(currentKana);
 
     // place the answer above the failed character, turn it red.
-    var kanaWidth = currentKanaElements[0]
+    var kanaWidth = currentKanaElement
         .append('<span class="small_above">' + currentRomaji + '')
         .addClass('red')
         .removeClass('white')
         .width();
     shiftKanaLeft(kanaWidth);
-
-    for(let i = 1; i < currentKanaElements.length; ++i)
-    {
-        var kanaWidth = currentKanaElements[i]
-            .addClass('red')
-            .removeClass('white')
-            .width();
-        shiftKanaLeft(kanaWidth);
-    }
   
     if(!isCharJapaneseSpecialToken(currentKana)) 
     {
@@ -1066,47 +1047,36 @@ $('.romaji-container').keyup(function () {
     var kanaTyped = romajiToKana(typedCharacters);
 
     var currentKanaElement = $('.white').first();
-    var nextKanaElement = currentKanaElement.next();
-    
     var currentKana = currentKanaElement.text();
-    var nextKana = nextKanaElement.text();
 
-    var currentKanaElements = [currentKanaElement];
+    var currentRomaji = kanaToRomaji(currentKana);
 
-    if(hiraganaDigraphCharacters.contains(nextKana) && 
-        hiraganaToRomaji[currentKana + nextKana])
+    if(typedCharacters.length < currentRomaji.length)
     {
-        // have a digraph character. Slam them together.
-        currentKana = currentKana + nextKana;
-        currentKanaElements.push(nextKanaElement);
-    }
-
-    if(typedCharacters.length == 0)
-    {
-        // DO NOTHING. No character data
+        // DO NOTHING. No character data OR the user hasn't typed enough.
     }
     else if (kanaTyped) 
     {
         console.log("Typed|Current: ", kanaTyped[0], "|", currentKana);
-
+        
         if (kanaTyped.contains(currentKana)) 
         {
             // SUCCESS
             $(this).html(''); // clear the typed character
-            updateSuccessfulKanaEntry(currentKanaElements);
+            updateSuccessfulKanaEntry(currentKanaElement);
         } 
         else
         {
             // FAILURE
             $(this).html(''); // clear the typed character
-            updateFailedKanaEntry(currentKanaElements);
+            updateFailedKanaEntry(currentKanaElement);
         }
     }
     else if(!isRomajiStartOfKana(typedCharacters))
     {
         // THAT WASN'T A KANA
         $(this).html(''); // clear the typed character
-        updateFailedKanaEntry(currentKanaElements);
+        updateFailedKanaEntry(currentKanaElement);
     }
 
     var numKanaLeft= $('.white').length;
