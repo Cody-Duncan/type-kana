@@ -365,12 +365,12 @@ var hiraganaToRomaji = {
     "ぐぇ": ["gwe"],
     "ぐぉ": ["gwo"],
     "さ": ["sa"],
-    "し": ["si", "shi"],
+    "し": ["shi","si"],
     "す": ["su"],
     "せ": ["se"],
     "そ": ["so"],
     "ざ": ["za"],
-    "じ": ["zi", "ji"],
+    "じ": ["ji", "zi"],
     "ず": ["zu"],
     "ぜ": ["ze"],
     "ぞ": ["zo"],
@@ -390,16 +390,16 @@ var hiraganaToRomaji = {
     "じぇ": ["zye", "je", "jye"],
     "じょ": ["zyo", "jo", "jyo"],
     "た": ["ta"],
-    "ち": ["ti", "chi"],
-    "つ": ["tu", "tsu"],
+    "ち": ["chi", "ti"],
+    "つ": ["tsu", "tu"],
     "て": ["te"],
     "と": ["to"],
     "っ": ["ltu", "xtu", "ltsu"],
-    "ちゃ": ["tya", "cha", "cya"],
+    "ちゃ": ["cha", "tya", "cya"],
     "ちぃ": ["tyi", "cyi"],
-    "ちゅ": ["tyu", "chu", "cyu"],
+    "ちゅ": ["chu", "tyu", "cyu"],
     "ちぇ": ["tye", "che", "cye"],
-    "ちょ": ["tyo", "cho", "cyo"],
+    "ちょ": ["cho", "tyo", "cyo"],
     "つぁ": ["tsa"],
     "つぃ": ["tsi"],
     "つぇ": ["tse"],
@@ -514,6 +514,18 @@ var hiraganaToRomaji = {
     "ん": ["n", "nn", "n ", "xn"]
 };
 
+var hiraganaDigraphCharacters = 
+[
+    "ぁ",
+    "ぃ",
+    "ぅ",
+    "ぇ",
+    "ぉ",
+    "ゃ",
+    "ゅ",
+    "ょ",
+    "っ",
+];
 
 var whatDoIKnow = [
     'あ', 'い', 'う', 'え', 'お', 
@@ -702,16 +714,23 @@ var hiraganaToKatakana = function (hira) {
 };
 
 var romajiToKana = function (romaji) {
-    var isKatakana = $('input[name="kana"]:checked').val() == 'katakana';
     var hiragana = romajiToHiragana[romaji];
+    var isHiragana = hiragana != null;
     
-    if (!hiragana)
+    if (!isHiragana)
     {
+        // check if it's a special character
         var whitespace= englishToJapaneseSpecialTokens[romaji];
         return (!whitespace) ? null : whitespace;
     }
     // must return an array
-    return isKatakana ? [hiraganaToKatakana(hiragana)] : [hiragana];
+    return isKatakanaMode() ? [hiraganaToKatakana(hiragana)] : [hiragana];
+};
+
+var kanaToRomaji = function (kana) {
+    var hiraganaChar = (isCharHiragana(kana) ? kana : katakanaToHiragana(kana));
+    var romaji = hiraganaToRomaji[hiraganaChar][0];
+    return romaji;
 };
 
 Array.prototype.contains = function(element){
@@ -739,7 +758,9 @@ function isKatakanaMode() {
 }
 
 function getListOfSelectedKana() {
-    return $('.kana-selection.btn-grey.active').text();
+    return $('.kana-selection.btn-grey.active').map(function(){
+        return $.trim($(this).text());
+     }).get();
 }
 
 function getRandKana(listOfKana) {
@@ -827,9 +848,11 @@ function resetKanaAttemptCount() {
 }
 
 function incrementKanaAttemptCount() {
-    if (isInfinityMode())++kanaAttemptCount;
+    if (isInfinityMode())
+    {
+        ++kanaAttemptCount;
+    }
 }
-
 
 $('.btn-start').click(function () {
     started = true;
@@ -932,94 +955,164 @@ function shiftKanaRightSecretly() {
     $('.kana-container').css('margin-left', (currentShift + totalWidthOfRemoved) + 'px');
 }
 
+function startTimer()
+{
+    time = new Date()
+    timer = setInterval(function () {
+        var deltaTime = (+new Date - time) / 1000;
+        var s = Math.floor(deltaTime % 60);
+        if (s < 10)
+            s = '0' + s;
+        var m = Math.floor(deltaTime / 60 % 60);
+        $('.time').text(m + ':' + s);
+    }, 1000);
+}
+
+function updateSuccessfulKanaEntry(currentKanaElements)
+{
+    var currentKana = "";
+    currentKanaElements.forEach(function(element) {
+        currentKana += element.text();
+    });
+
+    var currentRomaji = kanaToRomaji(currentKana);
+
+    currentKanaElements.forEach(function(element) {
+        var kanaWidth = element.addClass('green').removeClass('white').width();
+        shiftKanaLeft(kanaWidth);
+    });
+
+    if(!isCharJapaneseSpecialToken(currentKana)) 
+    {
+        ++score;
+        incrementKanaAttemptCount();
+        updateScoreBoard();
+    }
+}
+
+function updateFailedKanaEntry(currentKanaElements)
+{
+    var currentKana = "";
+    currentKanaElements.forEach(function(element) {
+        currentKana += element.text();
+    });
+
+    var currentRomaji = kanaToRomaji(currentKana);
+
+    // place the answer above the failed character, turn it red.
+    var kanaWidth = currentKanaElements[0]
+        .append('<span class="small_above">' + currentRomaji + '')
+        .addClass('red')
+        .removeClass('white')
+        .width();
+    shiftKanaLeft(kanaWidth);
+
+    for(let i = 1; i < currentKanaElements.length; ++i)
+    {
+        var kanaWidth = currentKanaElements[i]
+            .addClass('red')
+            .removeClass('white')
+            .width();
+        shiftKanaLeft(kanaWidth);
+    }
+  
+    if(!isCharJapaneseSpecialToken(currentKana)) 
+    {
+        incrementKanaAttemptCount();
+        updateScoreBoard();
+    }
+}
+
+function isRomajiStartOfKana(typedCharacters)
+{
+    for(var key in romajiToHiragana)
+    {
+        if(key.startsWith(typedCharacters))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 $('.romaji-container').keyup(function () {
-    if (!timer) {
-        time = +new Date()
-        timer = setInterval(function () {
-            var deltaTime = (+new Date - time) / 1000;
-            var s = Math.floor(deltaTime % 60);
-            if (s < 10)
-                s = '0' + s;
-            var m = Math.floor(deltaTime / 60 % 60);
-            $('.time').text(m + ':' + s);
-        }, 1000);
+    // kick up the timer after the user starts typing.
+    if (!timer)
+    {
+        startTimer();
     }
 
-    if (isInfinityMode()) {
-        if ($('.white').length < 30) {
-            fillKana();
+    if (isInfinityMode())
+    {
+        var numKanaLeft = $('.white').length;
+        if (numKanaLeft < 30) 
+        {
+            fillKana(); // refill
         }
-        else if ($('.kana-container span').length > 100) {
-            if ($('.kana-container').is(':animated')) {
-                $('.kana-container').promise().done(shiftKanaRightSecretly); // do it after the animation finishes
+        else if ($('.kana-container span').length > 100) 
+        {
+            if ($('.kana-container').is(':animated')) 
+            {
+                $('.kana-container').promise().done(shiftKanaRightSecretly); // shift after the animation finishes
             }
-            else {
-                shiftKanaRightSecretly(); // do it now
+            else 
+            {
+                shiftKanaRightSecretly(); // shift now
             }
         }
     }
 
     var typedCharacters= $(this).text();
     var kanaTyped = romajiToKana(typedCharacters);
-    var currentKana = $('.white').first().text();
-    var currentRomaji = hiraganaToRomaji[currentKana][0];
+
+    var currentKanaElement = $('.white').first();
+    var nextKanaElement = currentKanaElement.next();
+    
+    var currentKana = currentKanaElement.text();
+    var nextKana = nextKanaElement.text();
+
+    var currentKanaElements = [currentKanaElement];
+
+    if(hiraganaDigraphCharacters.contains(nextKana) && 
+        hiraganaToRomaji[currentKana + nextKana])
+    {
+        // have a digraph character. Slam them together.
+        currentKana = currentKana + nextKana;
+        currentKanaElements.push(nextKanaElement);
+    }
+
     if(typedCharacters.length == 0)
     {
         // DO NOTHING. No character data
     }
     else if (kanaTyped) 
     {
-        console.log(kanaTyped, $('.white').first().text());
+        console.log("Typed|Current: ", kanaTyped[0], "|", currentKana);
 
-        if (kanaTyped.contains($('.white').first().text())) {
+        if (kanaTyped.contains(currentKana)) 
+        {
             // SUCCESS
-            $(this).html('');
-            var w = $('.white').first().addClass('green').removeClass('white').width();
-            shiftKanaLeft(w);
-
-            if(!isCharJapaneseSpecialToken(currentKana)) {
-                ++score;
-                incrementKanaAttemptCount();
-                updateScoreBoard();
-            }
-        } else if ($(this).html() !== 'n') {
+            $(this).html(''); // clear the typed character
+            updateSuccessfulKanaEntry(currentKanaElements);
+        } 
+        else
+        {
             // FAILURE
-            $(this).html('');
-            var w = $('.white').first()
-                .append('<span class="small_above">' + currentRomaji + '')
-                .addClass('red')
-                .removeClass('white')
-                .width();
-            shiftKanaLeft(w);
-            
-            if(!isCharJapaneseSpecialToken(currentKana)) {
-                incrementKanaAttemptCount();
-                updateScoreBoard();
-            }
-            
+            $(this).html(''); // clear the typed character
+            updateFailedKanaEntry(currentKanaElements);
         }
     }
-    else if (
-        !(romajiToKana(typedCharacters + 'a') || 
-        romajiToKana(typedCharacters + 'ha'))) 
+    else if(!isRomajiStartOfKana(typedCharacters))
     {
         // THAT WASN'T A KANA
-        console.log(romajiToKana($(this).html() + 'a'));
-        $(this).html('');
-        var w = $('.white').first().addClass('red').removeClass('white').width();
-        shiftKanaLeft(w);
-
-        if(!isCharJapaneseSpecialToken(currentKana)) {
-            incrementKanaAttemptCount();
-            updateScoreBoard();
-        }
+        $(this).html(''); // clear the typed character
+        updateFailedKanaEntry(currentKanaElements);
     }
 
-    console.log("length: ", $('.white').length);
-
-    if (!$('.white').length) {
-        // RESTORE MENU
-        end_typing()
+    var numKanaLeft= $('.white').length;
+    if (numKanaLeft == 0) 
+    {
+        end_typing()  // RESTORE MENU
     }
 });
 
@@ -1035,25 +1128,21 @@ function handleKanaGroupCheckboxOnClick(event) {
     });
 }
 
- function handleKanaSelectionOnClick(event) {
+function handleKanaSelectionOnClick(event) {
+    // stop anything else from handling this event
     event.preventDefault();
     event.stopImmediatePropagation();
-    $(this).toggleClass('active');
-    var atLeastOneActive = $(this).parents('div.row').children('button').hasClass('active');
 
+    // toggle the kana being active
+    $(this).toggleClass('active');
+
+    // set the row's checkbox to true if at least one is active, false if none are active
+    var atLeastOneActive = $(this).parents('div.row').children('button').hasClass('active');
     var kanagroupCheckbox = $(this).siblings('label').find('input');
     kanagroupCheckbox.prop('checked', atLeastOneActive);
 }
 
-$('#infinity-switch').on('switchChange.bootstrapSwitch', function (event, state) {
-    if ($('#infinity-switch').is(':checked')) {
-        kanaAttemptCount = 1000000000;
-    }
-    else {
-        kanaAttemptCount = 100;
-    }
-});
-
+// construct all the kana buttons for each column
 $('.kana-selection-container > .row > .col').each(function(index) {
 
     var startStructureIndex= (index > 0) ? kanaDisplayStructureColumnEndIndices[index-1] : 0;
@@ -1074,9 +1163,9 @@ $('.kana-selection-container > .row > .col').each(function(index) {
             var rowKana = kanaDisplayStructure[rowIndex];
             for (var kanaIndex= 0; kanaIndex < rowKana.length; ++kanaIndex)
             {
-               var kanaButton = $("<button>", {"class": "btn btn-primary btn-huge kana-selection btn-grey active", "data-toggle":"button", "aria-pressed":"false", "autocomplete":"off"});
-               kanaButton.click(handleKanaSelectionOnClick);
-               kanaButton.append(rowKana[kanaIndex]);
+                var kanaButton = $("<button>", {"class": "btn btn-primary btn-huge kana-selection btn-grey active", "data-toggle":"button", "aria-pressed":"false", "autocomplete":"off"});
+                kanaButton.click(handleKanaSelectionOnClick);
+                kanaButton.append(rowKana[kanaIndex]);
 
                 rowElement.append(kanaButton);
             }
@@ -1088,4 +1177,24 @@ $('.kana-selection-container > .row > .col').each(function(index) {
     {
         console.log("bad column index for kana-selection-container");
     }
+});
+
+// By default, disable the digraphs (Yōon)
+$('.check-kanagroup').each(function(index) {
+    if(index >= kanaDisplayStructureColumnEndIndices[1])
+    {
+        this.click();
+    }
+})
+
+// swap the kana selectors from hiragana to katakana when the radio button changes.
+$('input[name="kana"]').click(function()
+{
+    $('.kana-selection').each(
+        function () 
+        { 
+            var currentText = $(this).text();
+            var convertedText = isHiraganaMode() ? katakanaToHiragana(currentText) : hiraganaToKatakana(currentText);
+            $(this).text(convertedText);
+        });
 });
