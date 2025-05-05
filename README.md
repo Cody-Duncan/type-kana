@@ -1,10 +1,19 @@
-Type Kana - A game to help you speed up reading Hiragana / Katakana
+Type Kana - Typing Game in Hiragana / Katakana
 =========
 
-I’ve been learning Japanese for the past few weeks, and while I have learned the Kana, it takes me quite a while to recollect them. So I created a little game to help me memorize it quicker.
+![preview image of type-kana](type_kana_preview.png)
 
-In this game, you are given to read 100 random Hiragana / Katakana characters, and you type in their Romaji pronunciation. It tracks your speed (time elapsed) and accuracy.
+Original: by [fleonus](https://github.com/fleon) at <https://github.com/fleon/type-kana>
 
-If someone is learning Japanese, do give it a try and let me know your scores!
+### Type the kana you see on screen as *fast* as you can!
 
-Try it out: [https://cody-duncan.github.io/type-kana/](https://cody-duncan.github.io/type-kana/)
+I branched and made some modifications for my preferences, circa 2018.  
+Try out this one here : <https://cody-duncan.github.io/type-kana/>
+
+The original has since gotten several updates and is strictly better.   
+Go play it here: <https://lab.fleon.org/type-kana/>
+
+The version by [Merilynn Bandy](https://www.furudean.com/) is quite nice.  
+Play it here: <https://type-kana.furudean.com/>
+
+
